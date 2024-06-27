@@ -10,12 +10,12 @@ func Merge(chs ...chan int) chan int {
 
 	wg.Add(len(chs))
 	for _, ch := range chs {
-		go func() {
+		go func(chl chan int) {
 			defer wg.Done()
-			for v := range ch {
+			for v := range chl {
 				r <- v
 			}
-		}()
+		}(ch)
 	}
 
 	go func() {
